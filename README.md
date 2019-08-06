@@ -1,1 +1,1 @@
-# ballerina-camel-springboot-content-based-routing
+# ballerina-camel-springboot-cloud-native-deployment
