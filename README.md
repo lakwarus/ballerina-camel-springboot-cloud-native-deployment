@@ -1,1 +1,1 @@
-# ballerina-camel-springboot-cloud-native-deployment
+# Cloud Native deployment - Ballerina vs Camel+SpringBoot
