@@ -1,1 +1,1 @@
-# Cloud Native deployment - Ballerina vs Camel+SpringBoot
+# Cloud Native Deployment - Ballerina vs Camel+SpringBoot
