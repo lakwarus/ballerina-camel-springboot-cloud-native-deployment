@@ -1,4 +1,4 @@
-# Cloud Native Deployment - Ballerina vs Camel+SpringBoot
+# Cloud Native Deployment - Ballerina vs SpringBoot
 
 With the emergence of microservice architecture, software architects and developers adapt microservice development for fast innovation. Smaller teams, agile software development life cycles, freedom to use heterogeneous technologies, early feedback cycles are the key drivers for success stories. 
 
