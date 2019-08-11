@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;springboot-camel-restdsl&apos;" deleteContents="false" description="Delete resource &apos;springboot-camel-restdsl&apos;" element1="/springboot-camel-restdsl" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1565536954403"/>
+</session>
