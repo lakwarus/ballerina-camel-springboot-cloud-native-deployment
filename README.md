@@ -513,5 +513,6 @@ $> curl -X POST -d '{ "id": "100500", "name": "XYZ", "description": "Sample orde
 ## References
 
 [1] https://github.com/fabric8io/fabric8-maven-plugin/ 
+
 [2] https://github.com/fabric8-quickstarts/spring-boot-camel
 
