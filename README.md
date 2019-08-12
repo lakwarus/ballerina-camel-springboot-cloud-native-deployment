@@ -1,10 +1,10 @@
-# Cloud Native Deployment - Ballerina vs SpringBoot
+# Cloud Native Deployment - Ballerina vs Camel+SpringBoot
 
 With the emergence of microservice architecture, software architects and developers adapt microservice development for fast innovation. Smaller teams, agile software development life cycles, freedom to use heterogeneous technologies, early feedback cycles are the key drivers for success stories. 
 
 To get all these benefits, devOps have to play a major role. They have to tune their deployment engine to roll out frequent releases without disrupting the end users. Cloud native deployment play a key role. The Importance of this aspect, cloud native deployment should not be an afterthought. This article mainly focus on how Camel+SpringBoot and Ballerina provide cloud native deployment support.
 
-Docker and Kubernetes are playing a major role in cloud native deployment. Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package. Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications.
+[Docker](https://www.docker.com) and [Kubernetes](https://kubernetes.io/) are playing a major role in cloud native deployment. Docker is a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package. Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications.
 
 ## What we’ll build
 We will use the same two applications we have implemented in [RESTFul microservice] (https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice) and extend to deploy in Kubernetes.
