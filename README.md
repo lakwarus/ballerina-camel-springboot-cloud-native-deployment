@@ -287,11 +287,11 @@ Now let's deploy our application in Kubernetes cluster. Here I am used docker-fo
 
 You can use fabric8 maven build with several options.
 
--- fabric8:resource 		-	Create Kubernetes and OpenShift resource descriptors
--- fabric8:build		- 	Build Docker images
--- fabric8:push			- 	Push Docker images to a registry
--- fabric8:deploy		- 	Deploy Kubernetes / OpenShift resource objects to a cluster
--- fabric8:watch		-	Watch for doing rebuilds and restarts
+- fabric8:resource 	-	Create Kubernetes and OpenShift resource descriptors
+- fabric8:build		- 	Build Docker images
+- fabric8:push		- 	Push Docker images to a registry
+- fabric8:deploy	- 	Deploy Kubernetes / OpenShift resource objects to a cluster
+- fabric8:watch		-	Watch for doing rebuilds and restarts
 
 
 Lets use fabric8:deploy first. Here you I have skipped tests and use k8s profile which we configured previously.
