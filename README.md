@@ -71,5 +71,77 @@ As a first step, I have introduced dependency management section below.
 		</dependencies>
 	</dependencyManagement>
 ```
+Then added fabric8 dependency in the dependency section additional to previous dependencies. 
+
+```xml
+<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>kubernetes-assertions</artifactId>
+			<version>2.3.7</version>
+			<scope>test</scope>
+		</dependency>
+```
+
+Alter build section by introducing `spring-boot:run` in default goal and add execution goals.
+
+```
+<build>
+		<defaultGoal>spring-boot:run</defaultGoal>
+
+		<plugins>
+			<plugin>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.springframework.boot</groupId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+```
+
+Finally added `k8s` profile section below.
+
+```xml
+<profiles>
+		<profile>
+			<id>k8s</id>
+			<build>
+				<plugins>
+
+					<plugin>
+						<artifactId>fabric8-maven-plugin</artifactId>
+						<groupId>io.fabric8</groupId>
+						<version>4.2.0</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>resource</goal>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+```
+
+Before create docker images with our application, we need to create an Uber.jar (fat jar)  with all dependencies and should be able to execute with `java -jar <application>.jar`. But our previous pom.xml is correctly configured and give some dependency issues. After spending sometimes, finally figured it out that we need to add another dependency in the dependency section. 
+
+
+```xml
+<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+``` 
+ Here you can find complete [pom.xml](https://github.com/lakwarus/ballerina-springboot-cloud-native-deployment/blob/master/springBoot/springboot-camel-restdsl/pom.xml).
 
 
