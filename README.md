@@ -657,6 +657,13 @@ target/bin/order_mgt-executable.jar
 	Run the following command to install the application using Helm: 
 	helm install --name restful-service restful-service/target/kubernetes/order_mgt/restful-service
 ```
+
+```bash
+$>docker images
+REPOSITORY                                                       TAG                           IMAGE ID            CREATED             SIZE
+restful-service                                                  v1.0                          2b929a6d2e1c        1 minutes ago      214MB
+```
+
 ```bash
 $>kubectl apply -f restful-service/target/kubernetes/order_mgt
 service/restful-service created
