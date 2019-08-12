@@ -660,8 +660,8 @@ target/bin/order_mgt-executable.jar
 
 ```bash
 $>docker images
-REPOSITORY                                                       TAG                           IMAGE ID            CREATED             SIZE
-restful-service                                                  v1.0                          2b929a6d2e1c        1 minutes ago      214MB
+REPOSITORY                    TAG                           IMAGE ID            CREATED             SIZE
+restful-service               v1.0                          2b929a6d2e1c        1 minutes ago      214MB
 ```
 
 ```bash
