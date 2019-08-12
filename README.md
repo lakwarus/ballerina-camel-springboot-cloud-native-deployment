@@ -613,7 +613,7 @@ Addition to deployment and services Ballerina Kubernetes extension support many 
 - OpenShift build config and image stream support.
 - OpenShift route support.
 
-Note: You can find our more information in the [Ballerina Kubernetes Extension repo](https://github.com/ballerinax/kubernetes)
+Note: You can find our more information in the [Ballerina Kubernetes Extension](https://github.com/ballerinax/kubernetes) repo.
 
 [Here](https://github.com/lakwarus/ballerina-springboot-cloud-native-deployment/blob/master/ballerina/restful-service/src/order_mgt/order_service.bal) is the complete source code.
 
@@ -664,4 +664,6 @@ TODO
 [1] https://github.com/fabric8io/fabric8-maven-plugin/ 
 
 [2] https://github.com/fabric8-quickstarts/spring-boot-camel
+
+[3] https://github.com/ballerinax/kubernetes
 
