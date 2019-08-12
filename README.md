@@ -424,3 +424,94 @@ Since I am running Kubernetes cluster in my mac machine, I can’t access the `s
 Also if you looked at maven output, Kubernetes artifacts use for above deployment can be found in `/Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/kubernetes/` location. 
 
 Additional to Kubernetes artifacts, it has created Openshift artifacts in `/Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/openshift/`. Compared to Kubernetes artifacts, it has created additional `springboot-camel-restdsl-route.yml` to configure OpenShift cluster to make route which will able to access as Zero Configuration.
+
+#### External Configuration templates
+
+Like you see, Zero Configuration is not enough to test our application in environment like docker-for-mac. Lets see how we can use `External Configuration templates` to modify some Kubernetes artifacts.
+
+You can create different Kubernetes resource templates. First we need to create fabric8 folder inside the `src/main`. Here is the sample deployment template.
+
+``` yaml
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - 
+          resources:
+            requests:
+              cpu: "0.2"
+              memory: 256Mi
+            limits:
+              cpu: "1.0"
+              memory: 256Mi
+```
+
+Lets create kubernetes Service template with `NodePort` type to enable access outside the Kubernetes cluster. 
+
+```yaml
+spec:
+  type: NodePort
+```
+
+Now let's build the project again.
+
+```bash
+$> mvn clean -DskipTests fabric8:deploy -Pk8s
+```
+
+```bash
+$> kubectl get all
+NAME                                            READY   STATUS    RESTARTS   AGE
+pod/springboot-camel-restdsl-5f9ddf6d99-xblcg   1/1     Running   0          22s
+
+NAME                               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/kubernetes                 ClusterIP   10.96.0.1        <none>        443/TCP          8h
+service/springboot-camel-restdsl   NodePort    10.105.164.129   <none>        8080:30648/TCP   22s
+
+NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/springboot-camel-restdsl   1/1     1            1           22s
+
+NAME                                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/springboot-camel-restdsl-5f9ddf6d99   1         1         1       22s
+
+```
+Now you can access application by using nodePort.
+
+```bash
+$> curl -X POST -d '{ "id": "100500", "name": "XYZ", "description": "Sample order."}' "http://localhost:30648/ordermgt/order" -H "Content-Type:application/json" -v
+* TCP_NODELAY set
+* Connected to localhost (::1) port 30648 (#0)
+> POST /ordermgt/order HTTP/1.1
+> Host: localhost:30648
+> User-Agent: curl/7.54.0
+> Accept: */*
+> Content-Type:application/json
+> Content-Length: 64
+> 
+* upload completely sent off: 64 out of 64 bytes
+< HTTP/1.1 201 
+< Location: http://localhost:8080/ordermgt/order/100500
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Mon, 12 Aug 2019 01:27:51 GMT
+< 
+* Connection #0 to host localhost left intact
+{"status":"Order Created!","orderId":"100500"}
+```
+
+
+
+
+
+ 
+
+
+
+
+
+## References
+
+[1] https://github.com/fabric8io/fabric8-maven-plugin/ 
+[2] https://github.com/fabric8-quickstarts/spring-boot-camel
+
