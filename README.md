@@ -500,14 +500,163 @@ $> curl -X POST -d '{ "id": "100500", "name": "XYZ", "description": "Sample orde
 {"status":"Order Created!","orderId":"100500"}
 ```
 
+## Ballerina
 
+### Prerequisites
 
+- Ballerina Distribution
+- A Text Editor or an IDE. I have used VSCode with Ballerina VSCode plugin
+- Docker
+- Kubernetes
 
+### Setting up the project
 
- 
+Please refer https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice
 
+### Implementation
 
+Please refer https://github.com/lakwarus/ballerina-camel-springboot-restful-microservice
 
+### Deployment
+
+In this section we will look at how we can deploy our Ballerina application into Kubernetes platform.
+
+The Ballerina language provides native support to run Ballerina programs on Kubernetes, and allows you to include Kubernetes annotations as part of your service code. Ballerina also takes care of the creation of Docker images so that you do not need to explicitly create Docker images prior to deploying it on Kubernetes.
+
+Now let's take a look at how you can deploy the orderMgt service on Kubernetes.
+
+To enable Kubernetes deployment for the service, first you need to import ballerinax/kubernetes and add the @kubernetes annotations as shown below.
+
+```java
+import ballerina/http;
+import ballerina/log;
+import ballerinax/kubernetes;
+
+@kubernetes:Service {
+    serviceType:"NodePort",
+    name:"restful-service"
+}
+listener http:Listener httpListener = new(8080);
+
+// Order management is done using an in-memory map.
+// Add some sample orders to 'ordersMap' at startup.
+map<json> ordersMap = {};
+
+@kubernetes:Deployment {
+    image:"restful_service:v1.0",
+    name:"restful-service"
+}
+@http:ServiceConfig { basePath: "/ordermgt" }
+service orderMgt on httpListener {
+```
+
+Here I defined `@kubernetes:Deployment` on top of `service`. `@kubernetes:Deployment`  annotation support several properties and developer can use to match their requirements. 
+
+|**Annotation Name**|**Description**|**Default value**|
+|--|--|--|
+|name|Name of the deployment|<BALLERINA_FILE_NAME>-deployment or <BALLERINA_MODULE_NAME>-deployment|
+|labels|Labels for deployment|{ app: <OUTPUT_FILE_NAME> }|
+|annotations|Annotations for deployment|{}|
+|dockerHost|Docker host IP and docker PORT.(e.g "tcp://192.168.99.100:2376")|DOCKER_HOST environment variable. If DOCKER_HOST is unavailable, uses "unix:///var/run/docker.sock" for Unix or uses "npipe:////./pipe/docker_engine" for Windows 10 or uses "localhost:2375"|
+|dockerCertPath|Docker cert path|DOCKER_CERT_PATH environment variable|
+|registry|Docker registry url|null|
+|username|Username for the docker registry|null|
+|password|Password for the docker registry|null|
+|baseImage|Base image to create the docker image|ballerina/ballerina-runtime:<BALLERINA_VERSION>|
+|image|Docker image with tag|<OUTPUT_FILE_NAME>:latest. If field `registry` is set then it will be prepended to the docker image name as <registry>/<OUTPUT_FILE_NAME>:latest|
+|buildImage|Building docker image|true|
+|push|Push docker image to registry. This will be effective if image buildImage field is true|false|
+|copyFiles|Copy external files for Docker image|null|
+|singleYAML|Generate a single yaml file for all k8s resources|true|
+|namespace|Namespace of the deployment|null|
+|replicas|Number of replicas|1|
+|livenessProbe|Enable or disable liveness probe|false|
+|readinessProbe|Enable or disable readiness probe|false|
+|imagePullPolicy|Docker image pull policy|IfNotPresent|
+|env|List of environment variables|null|
+|podAnnotations|Pod annotations|{}|
+|podTolerations|Pod tolerations|{}|
+|buildExtension|Extension for building docker images and artifacts|null|
+|dependsOn|Listeners this deployment Depends on|null|
+|imagePullSecrets|Image pull secrets value|null|
+
+I used `@kubernetes:Service` and it will generate corresponding Kubernetes services. I have set `serviceType` to `NodePort`, because I am using docker-for-mac and I want to access services.  
+
+Following properties are supported in `@kubernetes:Service` annotation
+
+|**Annotation Name**|**Description**|**Default value**|
+|--|--|--|
+|name|Name of the Service|<BALLERINA_SERVICE_NAME>-service|
+|labels|Labels for service|{ app: <OUTPUT_FILE_NAME> }|
+|portName|Name for the port|The protocol of the listener|
+|port|Service port|Port of the ballerina service|
+|targetPort|Target pod(s) port|Port of the ballerina service|
+|sessionAffinity|Pod session affinity|None|
+|serviceType|Service type of the service|ClusterIP|
+
+Addition to deployment and services Ballerina Kubernetes extension support many Kubernetes related features. 
+
+- Kubernetes deployment support.
+- Kubernetes service support.
+- Kubernetes liveness probe support
+- Kubernetes readiness probe support
+- Kubernetes ingress support.
+- Kubernetes horizontal pod autoscaler support.
+- Docker image generation.
+- Docker push support with remote docker registry.
+- Kubernetes secret support.
+- Kubernetes config map support.
+- Kubernetes persistent volume claim support.
+- Kubernetes resource quotas.
+- Istio gateways support.
+- Istio virtual services support.
+- OpenShift build config and image stream support.
+- OpenShift route support.
+
+Note: You can find our more information in the [Ballerina Kubernetes Extension repo](https://github.com/ballerinax/kubernetes)
+
+[Here](https://github.com/lakwarus/ballerina-springboot-cloud-native-deployment/blob/master/ballerina/restful-service/src/order_mgt/order_service.bal) is the complete source code.
+
+Let’s build the Ballerina project.
+
+```bash
+$> ballerina build
+TODO : get the output for 1.0.0.
+```
+
+```bash
+$> kubectl get all
+TODO
+```
+
+Now you can access application by using nodePort.
+$> curl -X POST -d '{ "id": "100500", "name": "XYZ", "description": "Sample order."}' "http://localhost:30648/ordermgt/order" -H "Content-Type:application/json" -v
+* TCP_NODELAY set
+* Connected to localhost (::1) port 30648 (#0)
+> POST /ordermgt/order HTTP/1.1
+> Host: localhost:30648
+> User-Agent: curl/7.54.0
+> Accept: */*
+> Content-Type:application/json
+> Content-Length: 64
+> 
+* upload completely sent off: 64 out of 64 bytes
+< HTTP/1.1 201 
+< Location: http://localhost:8080/ordermgt/order/100500
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Mon, 12 Aug 2019 01:27:51 GMT
+< 
+* Connection #0 to host localhost left intact
+{"status":"Order Created!","orderId":"100500"}
+
+## Comparison
+
+TODO
+
+## Summary
+
+TODO
 
 
 ## References
