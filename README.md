@@ -74,7 +74,7 @@ As a first step, I have introduced dependency management section below.
 Then added fabric8 dependency in the dependency section additional to previous dependencies. 
 
 ```xml
-<dependency>
+		<dependency>
 			<groupId>io.fabric8</groupId>
 			<artifactId>kubernetes-assertions</artifactId>
 			<version>2.3.7</version>
@@ -85,7 +85,7 @@ Then added fabric8 dependency in the dependency section additional to previous d
 Alter build section by introducing `spring-boot:run` in default goal and add execution goals.
 
 ```
-<build>
+	<build>
 		<defaultGoal>spring-boot:run</defaultGoal>
 
 		<plugins>
@@ -107,7 +107,7 @@ Alter build section by introducing `spring-boot:run` in default goal and add exe
 Finally added `k8s` profile section below.
 
 ```xml
-<profiles>
+	<profiles>
 		<profile>
 			<id>k8s</id>
 			<build>
@@ -137,11 +137,162 @@ Before create docker images with our application, we need to create an Uber.jar 
 
 
 ```xml
-<dependency>
+		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 		</dependency>
 ``` 
  Here you can find complete [pom.xml](https://github.com/lakwarus/ballerina-springboot-cloud-native-deployment/blob/master/springBoot/springboot-camel-restdsl/pom.xml).
 
+Now lets do a few testing before going into Docker and Kubernetes deployment. Lets use `Zero Configuration` option first.
+
+#### Zero Configuration 
+
+First do a clean build.
+
+```bash
+$> mvn clean install
+```
+
+Next, create single executable jar.
+
+```bash
+$> mvn clean package
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building springboot-camel-restdsl 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ springboot-camel-restdsl ---
+[INFO] Deleting /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ springboot-camel-restdsl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ springboot-camel-restdsl ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 4 source files to /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ springboot-camel-restdsl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ springboot-camel-restdsl ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ springboot-camel-restdsl ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ springboot-camel-restdsl ---
+[INFO] Building jar: /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/springboot-camel-restdsl-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.7.RELEASE:repackage (repackage) @ springboot-camel-restdsl ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.7.RELEASE:repackage (default) @ springboot-camel-restdsl ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 4.077 s
+[INFO] Finished at: 2019-08-11T16:49:03-07:00
+[INFO] Final Memory: 34M/120M
+[INFO] ------------------------------------------------------------------------
+```
+
+It will create `springboot-camel-restdsl-0.0.1-SNAPSHOT.jar` in the target folder. Now you can use either `java - jar target/springboot-camel-restdsl-0.0.1-SNAPSHOT.jar` or `mvn spring-boot:run` to try out the application in your machine.
+
+```bash
+$> mvn spring-boot:run
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building springboot-camel-restdsl 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] >>> spring-boot-maven-plugin:2.1.7.RELEASE:run (default-cli) > test-compile @ springboot-camel-restdsl >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ springboot-camel-restdsl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ springboot-camel-restdsl ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ springboot-camel-restdsl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ springboot-camel-restdsl ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< spring-boot-maven-plugin:2.1.7.RELEASE:run (default-cli) < test-compile @ springboot-camel-restdsl <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.7.RELEASE:run (default-cli) @ springboot-camel-restdsl ---
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.7.RELEASE)
+
+2019-08-11 16:52:25.601  INFO 32626 --- [           main] .l.s.p.SpringbootCamelRestdslApplication : Starting SpringbootCamelRestdslApplication on Lakmals-MacBook-Pro.local with PID 32626 (/Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes started by lakmal in /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl)
+2019-08-11 16:52:25.605  INFO 32626 --- [           main] .l.s.p.SpringbootCamelRestdslApplication : No active profile set, falling back to default profiles: default
+2019-08-11 16:52:26.859  INFO 32626 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.apache.camel.spring.boot.CamelAutoConfiguration' of type [org.apache.camel.spring.boot.CamelAutoConfiguration$$EnhancerBySpringCGLIB$$a0fd2241] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-11 16:52:27.150  INFO 32626 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-08-11 16:52:27.184  INFO 32626 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-08-11 16:52:27.184  INFO 32626 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.22]
+2019-08-11 16:52:27.330  INFO 32626 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-08-11 16:52:27.331  INFO 32626 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1664 ms
+2019-08-11 16:52:27.624  INFO 32626 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-08-11 16:52:27.889  INFO 32626 --- [           main] o.a.c.i.converter.DefaultTypeConverter   : Type converters loaded (core: 195, classpath: 7)
+2019-08-11 16:52:28.240  INFO 32626 --- [           main] o.a.camel.spring.boot.RoutesCollector    : Loading additional Camel XML routes from: classpath:camel/*.xml
+2019-08-11 16:52:28.240  INFO 32626 --- [           main] o.a.camel.spring.boot.RoutesCollector    : Loading additional Camel XML rests from: classpath:camel-rest/*.xml
+2019-08-11 16:52:28.248  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Apache Camel 2.24.0 (CamelContext: camel-1) is starting
+2019-08-11 16:52:28.249  INFO 32626 --- [           main] o.a.c.m.ManagedManagementStrategy        : JMX is enabled
+2019-08-11 16:52:28.538  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : StreamCaching is not in use. If using streams then its recommended to enable stream caching. See more details at http://camel.apache.org/stream-caching.html
+2019-08-11 16:52:28.657  INFO 32626 --- [           main] o.a.c.c.jackson.JacksonDataFormat        : Found single ObjectMapper in Registry to use: com.fasterxml.jackson.databind.ObjectMapper@106a3ea1
+2019-08-11 16:52:28.662  INFO 32626 --- [           main] o.a.c.c.jackson.JacksonDataFormat        : Found single ObjectMapper in Registry to use: com.fasterxml.jackson.databind.ObjectMapper@106a3ea1
+2019-08-11 16:52:28.662  INFO 32626 --- [           main] o.a.c.c.jackson.JacksonDataFormat        : Found single ObjectMapper in Registry to use: com.fasterxml.jackson.databind.ObjectMapper@106a3ea1
+2019-08-11 16:52:28.663  INFO 32626 --- [           main] o.a.c.c.jackson.JacksonDataFormat        : Found single ObjectMapper in Registry to use: com.fasterxml.jackson.databind.ObjectMapper@106a3ea1
+2019-08-11 16:52:28.663  INFO 32626 --- [           main] o.a.c.c.jackson.JacksonDataFormat        : Found single ObjectMapper in Registry to use: com.fasterxml.jackson.databind.ObjectMapper@106a3ea1
+2019-08-11 16:52:28.664  INFO 32626 --- [           main] o.a.c.c.jackson.JacksonDataFormat        : Found single ObjectMapper in Registry to use: com.fasterxml.jackson.databind.ObjectMapper@106a3ea1
+2019-08-11 16:52:28.664  INFO 32626 --- [           main] o.a.c.c.jackson.JacksonDataFormat        : Found single ObjectMapper in Registry to use: com.fasterxml.jackson.databind.ObjectMapper@106a3ea1
+2019-08-11 16:52:28.665  INFO 32626 --- [           main] o.a.c.c.jackson.JacksonDataFormat        : Found single ObjectMapper in Registry to use: com.fasterxml.jackson.databind.ObjectMapper@106a3ea1
+2019-08-11 16:52:28.667  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Route: route1 started and consuming from: direct://addOrder
+2019-08-11 16:52:28.668  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Route: route2 started and consuming from: direct://getOrder
+2019-08-11 16:52:28.669  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Route: route3 started and consuming from: direct://putOrder
+2019-08-11 16:52:28.670  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Route: route4 started and consuming from: direct://deleteOrder
+2019-08-11 16:52:28.672  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Route: route5 started and consuming from: servlet:/ordermgt/order?httpMethodRestrict=POST
+2019-08-11 16:52:28.673  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Route: route6 started and consuming from: servlet:/ordermgt/order/%7BorderId%7D?httpMethodRestrict=GET
+2019-08-11 16:52:28.674  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Route: route7 started and consuming from: servlet:/ordermgt/order/%7BorderId%7D?httpMethodRestrict=PUT
+2019-08-11 16:52:28.675  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Route: route8 started and consuming from: servlet:/ordermgt/order/%7BorderId%7D?httpMethodRestrict=DELETE
+2019-08-11 16:52:28.676  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Total 8 routes, of which 8 are started
+2019-08-11 16:52:28.678  INFO 32626 --- [           main] o.a.camel.spring.SpringCamelContext      : Apache Camel 2.24.0 (CamelContext: camel-1) started in 0.428 seconds
+2019-08-11 16:52:28.710  INFO 32626 --- [           main] o.a.c.c.s.CamelHttpTransportServlet      : Initialized CamelHttpTransportServlet[name=CamelServlet, contextPath=]
+2019-08-11 16:52:28.713  INFO 32626 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-08-11 16:52:28.718  INFO 32626 --- [           main] .l.s.p.SpringbootCamelRestdslApplication : Started SpringbootCamelRestdslApplication in 3.457 seconds (JVM running for 7.282)
+```
+
+Now you can carried out application testing in your local machine.
+
+Now let's deploy our application in Kubernetes cluster. Here I am used docker-for-mac (with k8s enabled) setup. 
+
+You can use fabric8 maven build with several options.
+
+-- fabric8:resource 		-	Create Kubernetes and OpenShift resource descriptors
+-- fabric8:build		- 	Build Docker images
+-- fabric8:push			- 	Push Docker images to a registry
+-- fabric8:deploy		- 	Deploy Kubernetes / OpenShift resource objects to a cluster
+-- fabric8:watch		-	Watch for doing rebuilds and restarts
+
+
+Lets use fabric8:deploy first. Here you I have skipped tests and use k8s profile which we configured previously.
 
