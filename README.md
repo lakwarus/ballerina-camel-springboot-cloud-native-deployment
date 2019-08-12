@@ -639,16 +639,48 @@ Let’s build the Ballerina project.
 
 ```bash
 $> ballerina build
-TODO : get the output for 1.0.0.
+Compiling source
+    lakmal/order_mgt:0.1.0
+Created target/balo/order_mgt-2019r3-any-0.1.0.balo
+
+Generating executables
+target/bin/order_mgt-executable.jar
+
+	@kubernetes:Service 			 - complete 1/1
+	@kubernetes:Deployment 			 - complete 1/1
+	@kubernetes:Docker 			 - complete 3/3 
+	@kubernetes:Helm 			 - complete 1/1
+
+	Run the following command to deploy the Kubernetes artifacts: 
+	kubectl apply -f restful-service/target/kubernetes/order_mgt
+
+	Run the following command to install the application using Helm: 
+	helm install --name restful-service restful-service/target/kubernetes/order_mgt/restful-service
 ```
+```bash
+$>kubectl apply -f restful-service/target/kubernetes/order_mgt
+service/restful-service created
+deployment.apps/restful-service created 
+
+$>kubectl get all
+NAME                                   READY   STATUS   RESTARTS   AGE
+pod/restful-service-7886b8d955-9b7vl   1/1     Running    0          64s
+
+NAME                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/kubernetes        ClusterIP   10.96.0.1       <none>        443/TCP          30h
+service/restful-service   NodePort    10.104.127.59   <none>        8080:31686/TCP   64s
+
+NAME                              READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/restful-service   1/1     1            0           64s
+
+NAME                                         DESIRED   CURRENT   READY   AGE
+replicaset.apps/restful-service-7886b8d955   1         1         1       64s
+
+```
+Now you can access application by using nodePort.
 
 ```bash
-$> kubectl get all
-TODO
-```
-
-Now you can access application by using nodePort.
-$> curl -X POST -d '{ "id": "100500", "name": "XYZ", "description": "Sample order."}' "http://localhost:30648/ordermgt/order" -H "Content-Type:application/json" -v
+ $> curl -X POST -d '{ "id": "100500", "name": "XYZ", "description": "Sample order."}' "http://localhost:31686/ordermgt/order" -H "Content-Type:application/json" -v
 * TCP_NODELAY set
 * Connected to localhost (::1) port 30648 (#0)
 > POST /ordermgt/order HTTP/1.1
@@ -667,6 +699,8 @@ $> curl -X POST -d '{ "id": "100500", "name": "XYZ", "description": "Sample orde
 < 
 * Connection #0 to host localhost left intact
 {"status":"Order Created!","orderId":"100500"}
+```
+
 
 ## Comparison
 
