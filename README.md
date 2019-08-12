@@ -293,6 +293,134 @@ You can use fabric8 maven build with several options.
 - fabric8:deploy	- 	Deploy Kubernetes / OpenShift resource objects to a cluster
 - fabric8:watch		-	Watch for doing rebuilds and restarts
 
-
 Lets use fabric8:deploy first. Here you I have skipped tests and use k8s profile which we configured previously.
 
+```bash
+$> mvn clean -DskipTests fabric8:deploy -Pk8s
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building springboot-camel-restdsl 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ springboot-camel-restdsl ---
+[INFO] Deleting /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target
+[INFO] 
+[INFO] >>> fabric8-maven-plugin:4.2.0:deploy (default-cli) > install @ springboot-camel-restdsl >>>
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ springboot-camel-restdsl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- fabric8-maven-plugin:4.2.0:resource (default) @ springboot-camel-restdsl ---
+[INFO] F8: Running generator spring-boot
+[INFO] F8: spring-boot: Using Docker image fabric8/java-centos-openjdk8-jdk:1.5 as base / builder
+[INFO] F8: fmp-controller: Adding a default Deployment
+[INFO] F8: fmp-service: Adding a default service 'springboot-camel-restdsl' with ports [8080]
+[INFO] F8: fmp-revision-history: Adding revision history limit to 2
+[INFO] F8: validating /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/kubernetes/springboot-camel-restdsl-deployment.yml resource
+[INFO] F8: validating /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/kubernetes/springboot-camel-restdsl-service.yml resource
+[INFO] F8: fmp-controller: Adding a default DeploymentConfig
+[INFO] F8: fmp-service: Adding a default service 'springboot-camel-restdsl' with ports [8080]
+[INFO] F8: fmp-revision-history: Adding revision history limit to 2
+[INFO] F8: validating /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/openshift/springboot-camel-restdsl-route.yml resource
+[INFO] F8: validating /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/openshift/springboot-camel-restdsl-deploymentconfig.yml resource
+[INFO] F8: validating /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/openshift/springboot-camel-restdsl-service.yml resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ springboot-camel-restdsl ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 4 source files to /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ springboot-camel-restdsl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ springboot-camel-restdsl ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ springboot-camel-restdsl ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- maven-jar-plugin:3.1.2:jar (default-jar) @ springboot-camel-restdsl ---
+[INFO] Building jar: /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/springboot-camel-restdsl-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.7.RELEASE:repackage (repackage) @ springboot-camel-restdsl ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.7.RELEASE:repackage (default) @ springboot-camel-restdsl ---
+[INFO] Replacing main artifact with repackaged archive
+[INFO] 
+[INFO] --- fabric8-maven-plugin:4.2.0:build (default) @ springboot-camel-restdsl ---
+[INFO] F8: Running in Kubernetes mode
+[INFO] F8: Building Docker image in Kubernetes mode
+[INFO] F8: Running generator spring-boot
+[INFO] F8: spring-boot: Using Docker image fabric8/java-centos-openjdk8-jdk:1.5 as base / builder
+[INFO] Copying files to /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/docker/sample/springboot-camel-restdsl/latest/build/maven
+[INFO] Building tar: /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/docker/sample/springboot-camel-restdsl/latest/tmp/docker-build.tar
+[INFO] F8: [sample/springboot-camel-restdsl:latest] "spring-boot": Created docker-build.tar in 442 milliseconds
+[INFO] F8: [sample/springboot-camel-restdsl:latest] "spring-boot": Built image sha256:d8cec
+[INFO] F8: [sample/springboot-camel-restdsl:latest] "spring-boot": Removed old image sha256:ff2e5
+[INFO] F8: [sample/springboot-camel-restdsl:latest] "spring-boot": Tag with latest
+[INFO] 
+[INFO] --- maven-install-plugin:2.5.2:install (default-install) @ springboot-camel-restdsl ---
+[INFO] Installing /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/springboot-camel-restdsl-0.0.1-SNAPSHOT.jar to /Users/lakmal/.m2/repository/com/lakwarus/sample/springboot-camel-restdsl/0.0.1-SNAPSHOT/springboot-camel-restdsl-0.0.1-SNAPSHOT.jar
+[INFO] Installing /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/pom.xml to /Users/lakmal/.m2/repository/com/lakwarus/sample/springboot-camel-restdsl/0.0.1-SNAPSHOT/springboot-camel-restdsl-0.0.1-SNAPSHOT.pom
+[INFO] Installing /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/kubernetes.yml to /Users/lakmal/.m2/repository/com/lakwarus/sample/springboot-camel-restdsl/0.0.1-SNAPSHOT/springboot-camel-restdsl-0.0.1-SNAPSHOT-kubernetes.yml
+[INFO] Installing /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/openshift.yml to /Users/lakmal/.m2/repository/com/lakwarus/sample/springboot-camel-restdsl/0.0.1-SNAPSHOT/springboot-camel-restdsl-0.0.1-SNAPSHOT-openshift.yml
+[INFO] 
+[INFO] <<< fabric8-maven-plugin:4.2.0:deploy (default-cli) < install @ springboot-camel-restdsl <<<
+[INFO] 
+[INFO] 
+[INFO] --- fabric8-maven-plugin:4.2.0:deploy (default-cli) @ springboot-camel-restdsl ---
+[INFO] F8: Using Kubernetes at https://kubernetes.docker.internal:6443/ in namespace default with manifest /Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/kubernetes.yml 
+[INFO] F8: Using namespace: default
+[INFO] F8: Creating a Service from kubernetes.yml namespace default name springboot-camel-restdsl
+[INFO] F8: Created Service: target/fabric8/applyJson/default/service-springboot-camel-restdsl.json
+[INFO] F8: Creating a Deployment from kubernetes.yml namespace default name springboot-camel-restdsl
+[INFO] F8: Created Deployment: target/fabric8/applyJson/default/deployment-springboot-camel-restdsl.json
+[INFO] F8: HINT: Use the command `kubectl get pods -w` to watch your pods start up
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 14.852 s
+[INFO] Finished at: 2019-08-11T17:03:20-07:00
+[INFO] Final Memory: 54M/187M
+[INFO] ------------------------------------------------------------------------
+```
+
+Lets list docker images;
+
+```bash
+$> docker images
+REPOSITORY                                                       TAG                           IMAGE ID            CREATED             SIZE
+sample/springboot-camel-restdsl                                  latest                        d8cec9ad7bb7        2 minutes ago       482MB
+
+```
+Our maven:deploy created a `sample/springboot-camel-restdsl:latest` docker image with our application. It has used artifact-id as the default name.
+
+Lets run kubectl commands and see.
+
+```bash
+$>kubectl get all
+NAME                                            READY   STATUS    RESTARTS   AGE
+pod/springboot-camel-restdsl-7f77c84498-dnqlk   1/1     Running   0          8m9s
+
+NAME                               TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/kubernetes                 ClusterIP   10.96.0.1      <none>        443/TCP    7h31m
+service/springboot-camel-restdsl   ClusterIP   10.97.88.178   <none>        8080/TCP   8m9s
+
+NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/springboot-camel-restdsl   1/1     1            1           8m9s
+
+NAME                                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/springboot-camel-restdsl-7f77c84498   1         1         1       8m9s
+```
+
+It has created `springboot-camel-restdsl ` kubernetes deployment and `springboot-camel-restdsl  ` kubernetes service with Cluster-IP type. 
+
+Since I am running Kubernetes cluster in my mac machine, I can’t access the `springboot-camel-restdsl ` with Cluster-IP type. I need at least use nodePort type to access from my mach machine.
+
+Also if you looked at maven output, Kubernetes artifacts use for above deployment can be found in `/Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/kubernetes/` location. 
+
+Additional to Kubernetes artifacts, it has created Openshift artifacts in `/Users/lakmal/Documents/workspace-sts-3.9.9.RELEASE/springboot-camel-restdsl/target/classes/META-INF/fabric8/openshift/`. Compared to Kubernetes artifacts, it has created additional `springboot-camel-restdsl-route.yml` to configure OpenShift cluster to make route which will able to access as Zero Configuration.
