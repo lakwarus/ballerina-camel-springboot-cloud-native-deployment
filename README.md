@@ -499,6 +499,24 @@ $> curl -X POST -d '{ "id": "100500", "name": "XYZ", "description": "Sample orde
 * Connection #0 to host localhost left intact
 {"status":"Order Created!","orderId":"100500"}
 ```
+`fabric8-maven-plugin` supports vide range of Kubernetes/OpenShift features. 
+
+- Docker image generation.
+- Docker push support with remote docker registry.
+- Kubernetes deployment support.
+- Kubernetes service support.
+- Kubernetes liveness probe support
+- Kubernetes readiness probe support
+- Kubernetes ingress support.
+- Kubernetes secret support.
+- Kubernetes config map support.
+- Kubernetes persistent volume claim support.
+- Kubernetes resource quotas.
+- Policy and Role Binding
+- OpenShift build config and image stream support.
+- OpenShift route support.
+
+Please refer [fabric8 maven plugin](https://maven.fabric8.io/) for more information
 
 ## Ballerina
 
