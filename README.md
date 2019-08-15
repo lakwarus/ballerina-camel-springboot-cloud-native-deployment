@@ -708,14 +708,27 @@ Now you can access application by using nodePort.
 {"status":"Order Created!","orderId":"100500"}
 ```
 
-
 ## Comparison
 
-TODO
+- As per my understanding, Camel-K is the recomendard way (going forward) to bring cloud native support for Camel projects. But unfortunately, current versions are not worked properly for me. Other complexity of the Camel-K is it required to install Camel-K operators in our Kubernetes cluster to bring cloud native deployment support.  
 
-## Summary
+- As an alternative, fabric8 maven plugin provide very flexible and complete cloud native deployment support for Camel+SpringBoot applications.
 
-TODO
+- Fabric8 `Zero config` is good to start with but I think in majority case we need to go with `External Configuration templates` mode. Complexity of template mode is developer has to create required templates and this is not easy for average developer who does not have enough knowledge of Kubernetes concepts etc. 
+
+- Ballerina provide first class support for cloud native platform like Docker, Kubernetes, Istio etc. Dependency management and setup is so simple, it's just a matter of import `ballerina/kubernetes` library.
+
+- Developer experience of cloud native support in Ballerina is very rich, IDE plugin with autocompletions, suggestion for adding annotation are very handy.  
+
+- Ballerina provide very comprehensive support for all Kubernetes elements which required to run a real production ready artifacts at the source code compile stage. 
+
+##Summary
+
+- This article mainly compared Apache Camel+SpringBoot with Ballerina context of cloud native deployment support.
+
+- Comparison was carried out by deploying a real world sample by using both technologies.
+
+- In the context of cloud native deployment support, Ballerina has advantage over Apache Camel+SpringBoot due to that cloud native deployment is built in with Ballerina by design of the language itself.
 
 
 ## References
