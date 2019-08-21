@@ -722,7 +722,7 @@ Now you can access application by using nodePort.
 
 - Ballerina provide very comprehensive support for all Kubernetes elements which required to run a real production ready artifacts at the source code compile stage. 
 
-##Summary
+## Summary
 
 - This article mainly compared Apache Camel+SpringBoot with Ballerina context of cloud native deployment support.
 
