@@ -31,11 +31,11 @@ In this section we will look at how we can deploy our Camel+SpringBoot applicati
 
 #### Apache Camel-K
 
-After Googling I was find out Apache Camel-K project. Apache Camel K is a lightweight integration platform, born on Kubernetes, with serverless superpowers. To run our application with Camel-K, first we need to install/setup our Kubernetes cluster with Camel-K operators. I have spent a significant amount of time on this stage. I have tried multiple Camel-K released versions, 1.0.0-M1, 0.3.4, 0.3.3, 0.3.2, 0.3.1, 0.2.1, but I could not make properly working setup in my Kubernetes cluster. I have tried both docker-for-mac (with k8s enabled) and minikube environments. Current releases on Camel-K are not stable enough and community support and guides are not enough me to complete the task.
+Apache Camel K is a lightweight integration platform, born on Kubernetes, with serverless superpowers. To run our application with Camel-K, first we need to install/setup our Kubernetes cluster with Camel-K operators. I have spent a significant amount of time on this stage. I have tried multiple Camel-K released versions, 1.0.0-M1, 0.3.4, 0.3.3, 0.3.2, 0.3.1, 0.2.1, but I could not make properly working setup in my Kubernetes cluster. I have tried both docker-for-mac (with k8s enabled) and minikube environments. Current releases on Camel-K are not stable enough and community support and guides are not enough me to complete the task.
 
 #### Fabric8-Maven-Plugin
 
-Research on further, I found out a mature, stable way to deploy our application on Kubernetes cluster. It is Fabric8 Maven plugin, a one-stop-shop for building and deploying Java applications for Docker, Kubernetes and OpenShift.  It provides a tight integration into maven and benefits from the build configuration already provided. It is capable of:
+Further research, I found out a way to deploy our application on Kubernetes cluster. It is by using Fabric8 Maven plugin. Fabric8 Maven plugin is a one-stop-shop for building and deploying Java applications for Docker, Kubernetes and OpenShift.  It provides a tight integration into maven and benefits from the build configuration already provided. It is capable of:
 - Building Docker images
 - Creating OpenShift and Kubernetes resources
 - Deploy application on Kubernetes and OpenShift
